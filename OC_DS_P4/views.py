@@ -97,5 +97,5 @@ def estimate():
 
     return json.dumps({'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, \
                                 '4_Dep' : dep, '5_Arr' : arr }, \
-                      '_Out' : {'1_Delay (min)' : result, '2_Carrier' : carrier}, \
+                      '_Out' : {'1_Delay (min)' : result, '2_Carrier' : carrier}}, \
                       sort_keys=True, indent=4)
