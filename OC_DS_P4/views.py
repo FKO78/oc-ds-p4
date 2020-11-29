@@ -5,9 +5,9 @@ from flask import Flask, request #, render_template, url_for,
 from .utils import *
 from pickle import Unpickler
 #import json
-import sys
+#import sys
 
-sys.setrecursionlimit(20000)
+#sys.setrecursionlimit(20000)
 
 app = Flask(__name__)
 
@@ -41,19 +41,17 @@ def estimate():
 
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
+
+        tmp_origin = get_city(cities, origin)
+        tmp_dest = get_city(cities, dest)
+        if (tmp_origin == None) or (tmp_dest == None):
+            res = 'Pas d"estimation possible'
+        else:
+            origin, dest = tmp_origin, tmp_dest
+            group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & (trips.DEST_CITY_NAME == dest)][['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
+            estimation = delay_estimation(origin=origin, dest=dest, h_dep=dep, h_arr=arr, dflight=day, group=group, carrier=carrier)
+
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
-
-#    pfile = app.config['SOURCE_FILE']
-
-    tmp_origin = get_city(cities, origin)
-    tmp_dest = get_city(cities, dest)
-
-    if (tmp_origin == None) or (tmp_dest == None):
-        res = 'Pas d"estimation possible'
-    else:
-        origin, dest = tmp_origin, tmp_dest
-#    group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & (trips.DEST_CITY_NAME == dest)][['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
-#        estimation = delay_estimation(origin=origin, dest=dest, h_dep=dep, h_arr=arr, dflight=day)
 
     return {'_In' : {'From' : origin, 'To': dest, 'Day' : day, 'Dep' : dep, 'Arr' : arr }, '_Out' : result}
