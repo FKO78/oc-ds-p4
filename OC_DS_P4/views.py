@@ -56,10 +56,10 @@ def estimate():
     input = []
 
     creneaux = np.arange(7,24).tolist()
-    if dep not in creneaux:
-        dep = 0
-    if arr not in creneaux:
-        arr = 0
+#    if dep not in creneaux:
+#        dep = 0
+#    if arr not in creneaux:
+#        arr = 0
 
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
