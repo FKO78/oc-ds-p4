@@ -8,11 +8,13 @@ def from_hdays(fdict, date=datetime.date.today()):
         res.append(delta.days )
     return min(res)
 
-def get_city(source, city):
+def test_h(creno, h):
     try:
-        res = source[source.NAME.str.contains(city, case=False)].NAME.values[0]
-    except IndexError:
-        res = None
+        res = int(h)
+        if res not in creneaux:
+            res = 0
+    except ValueError:
+        res = 0
     return res
 
 def get_trips_info(source, origin, dest):

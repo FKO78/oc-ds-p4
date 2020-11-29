@@ -56,16 +56,8 @@ def estimate():
     input = []
 
     creneaux = np.arange(7,24).tolist()
-    try:
-        if int(dep) not in creneaux:
-            dep = 0
-    except ValueError:
-            dep=0
-    try:
-        if int(arr) not in creneaux:
-            arr = 0
-    except ValueError:
-            arr=0
+    dep = test_h(creneaux, dep)
+    arr = test_h(creneaux, arr)
 
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
@@ -98,7 +90,7 @@ def estimate():
         #UNIQUE_CARRIER
             input.append(CARRIER_lbl.transform([carrier])[0])
 
-#            result = int(round(regr['lin'].predict([input])[0], 0))
+            result = int(round(regr['lin'].predict([input])[0], 0))
 
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
