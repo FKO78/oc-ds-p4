@@ -56,10 +56,16 @@ def estimate():
     input = []
 
     creneaux = np.arange(7,24).tolist()
-#    if dep not in creneaux:
-#        dep = 0
-#    if arr not in creneaux:
-#        arr = 0
+    try:
+        if int(dep) not in creneaux:
+            dep = 0 
+    except ValueError:
+            dep=0
+    try:
+        if int(arr) not in creneaux:
+            arr = 0
+    except ValueError:
+            arr=0
 
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
@@ -97,5 +103,5 @@ def estimate():
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
 
-    return {'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, '4_Dep' : dep, '5_Arr' : arr, 'cre' : creneaux }, \
+    return {'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, '4_Dep' : dep, '5_Arr' : arr }, \
             '_Out' : {'1_Delay' : result, '2_Carrier' : carrier, '3_Group'  : group}}
