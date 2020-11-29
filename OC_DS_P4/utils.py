@@ -8,10 +8,10 @@ def from_hdays(fdict, date=datetime.date.today()):
         res.append(delta.days )
     return min(res)
 
-def test_h(creno, h):
+def test_h(liste, h):
     try:
         res = int(h)
-        if res not in creneaux:
+        if res not in liste:
             res = 0
     except ValueError:
         res = 0
