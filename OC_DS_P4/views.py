@@ -56,10 +56,10 @@ def estimate():
     input = []
 
     creneaux = np.arange(7,24).tolist()
-    if h_dep not in creneaux:
-        h_dep = 0
-    if h_arr not in creneaux:
-        h_arr = 0
+    if dep not in creneaux:
+        dep = 0
+    if arr not in creneaux:
+        arr = 0
 
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
@@ -80,7 +80,7 @@ def estimate():
         #DISTANCE_GROUP
             input.append(group)
         #DEP_TIME_BLK'
-            input.append(h_dep)
+            input.append(dep)
         #FROM_HDAYS'
             input.append(abs(from_hdays(app.config['FERIES'], dflight)))
         #DEST_CITY_NAME
@@ -88,7 +88,7 @@ def estimate():
         #DAY_OF_WEEK'
             input.append(dflight.weekday()+1)
         #ARR_TIME_BLK'
-            input.append(h_arr)
+            input.append(arr)
         #UNIQUE_CARRIER
             input.append(CARRIER_lbl.transform([carrier])[0])
 
