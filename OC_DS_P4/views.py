@@ -56,4 +56,4 @@ def estimate():
 #    group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & (trips.DEST_CITY_NAME == dest)][['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
 #        estimation = delay_estimation(origin=origin, dest=dest, h_dep=dep, h_arr=arr, dflight=day)
 
-    return {'_In' : {'From' : origin, 'To': dest, 'Day' : day, 'Dep' : dep, 'Arr' : arr }, '_Out' : res}
+    return {'_In' : {'From' : origin, 'To': dest, 'Day' : day, 'Dep' : dep, 'Arr' : arr }, '_Out' : result}
