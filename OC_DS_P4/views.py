@@ -97,4 +97,5 @@ def estimate():
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
 
-    return {'_In' : {'From' : origin, 'To': dest, 'Day' : day, 'Dep' : dep, 'Arr' : arr }, '_Out' : result}
+    return {'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, '4_Dep' : dep, '5_Arr' : arr, 'cre' : creneaux }, \
+            '_Out' : {'1_Delay' : result, '2_Carrier' : carrier, '3_Group'  : group}}
