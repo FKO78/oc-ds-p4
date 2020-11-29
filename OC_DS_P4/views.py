@@ -47,8 +47,13 @@ def estimate():
             res = 'Pas d"estimation possible'
         else:
             origin, dest = tmp_origin, tmp_dest
-            group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & (trips.DEST_CITY_NAME == dest)][['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
-            estimation = delay_estimation(origin=origin, dest=dest, h_dep=dep, h_arr=arr, dflight=dflight, group=group, carrier=carrier)
+            group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & \
+                                    (trips.DEST_CITY_NAME == dest)]\
+                                    [['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
+            estimation = delay_estimation(CITY_lbl, CARRIER_lbl, regr, \
+                                          origin=origin, dest=dest, \
+                                          h_dep=dep, h_arr=arr, dflight=dflight, \
+                                          group=group, carrier=carrier)
 
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)

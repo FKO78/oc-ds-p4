@@ -20,7 +20,8 @@ def get_trips_info(source, origin, dest):
                 (source.DEST_CITY_NAME == dest)][['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
     return tmp[0], tmp[1]
 
-def delay_estimation(dflight="2016-04-10", \
+def delay_estimation(CITY_lbl, CARRIER_lbl, regr, \
+                     dflight="2016-04-10", \
                      origin='Los Angeles, CA', dest='Las Vegas, NV', \
                      h_dep=10, h_arr=14, group=1, carrier='WN'):
 
