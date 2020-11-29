@@ -1,4 +1,5 @@
 ﻿import datetime
+import numpy as np
 
 def from_hdays(fdict, date=datetime.date.today()):
     res = []
@@ -21,7 +22,7 @@ def get_trips_info(source, origin, dest):
 
 def delay_estimation(dflight="2016-04-10", \
                      origin='Los Angeles, CA', dest='Las Vegas, NV', \
-                     h_dep=10, h_arr=14, group=1, carrier='WN'): 
+                     h_dep=10, h_arr=14, group=1, carrier='WN'):
 
     """
         Cette fonction estime le retard à l'arrivée d'un voyage entre 2 villes américaines, selon une régresion linéaire.
