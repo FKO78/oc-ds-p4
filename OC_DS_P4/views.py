@@ -29,6 +29,21 @@ def index():
 
 @app.route('/delay/')
 def estimate():
+    """
+    Cette fonction estime le retard à l'arrivée d'un voyage entre 2 villes américaines, selon une régresion linéaire.
+
+    Entrées
+        * dflight : date du voyage au format AAAA-MM-JJ
+        * origin : nom de la ville de départ
+        * dest : nom de la ville d'arrivée
+        * h_dep : heure 'pleine' de départ souhaitée (ex., 10 entre 10:00 et 10:59)
+        * h_arr : heure 'pleine' d'arrivée souhaitée (ex., 14 entre 14:00 et 14:59)
+
+    Sorties
+        * le nom standard de la ville de départ
+        * le nom standard de la ville de destination
+        * le retard (min) estimé à l'arrivée
+    """
 
     origin = request.args.get('origin')
     dest = request.args.get('dest')
@@ -37,6 +52,14 @@ def estimate():
     day = request.args.get('day')
 
     result = ""
+
+    input = []
+
+    creneaux = np.arange(7,24).tolist()
+    if h_dep not in creneaux:
+        h_dep = 0
+    if h_arr not in creneaux:
+        h_arr = 0
 
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
@@ -50,10 +73,26 @@ def estimate():
             group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & \
                                     (trips.DEST_CITY_NAME == dest)]\
                                     [['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
-            estimation = delay_estimation(CITY_lbl, CARRIER_lbl, regr, \
-                                          origin=origin, dest=dest, \
-                                          h_dep=dep, h_arr=arr, dflight=dflight, \
-                                          group=group, carrier=carrier)
+        #MONTH
+            input.append(dflight.month)
+        #ORIGIN_CITY_NAME
+            input.append(CITY_lbl.transform([origin])[0])
+        #DISTANCE_GROUP
+            input.append(group)
+        #DEP_TIME_BLK'
+            input.append(h_dep)
+        #FROM_HDAYS'
+            input.append(abs(from_hdays(app.config['FERIES'], dflight)))
+        #DEST_CITY_NAME
+            input.append(CITY_lbl.transform([dest])[0])
+        #DAY_OF_WEEK'
+            input.append(dflight.weekday()+1)
+        #ARR_TIME_BLK'
+            input.append(h_arr)
+        #UNIQUE_CARRIER
+            input.append(CARRIER_lbl.transform([carrier])[0])
+
+            result = int(round(regr['lin'].predict([input])[0], 0))
 
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
