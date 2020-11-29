@@ -58,7 +58,7 @@ def estimate():
     creneaux = np.arange(7,24).tolist()
     try:
         if int(dep) not in creneaux:
-            dep = 0 
+            dep = 0
     except ValueError:
             dep=0
     try:
@@ -98,7 +98,7 @@ def estimate():
         #UNIQUE_CARRIER
             input.append(CARRIER_lbl.transform([carrier])[0])
 
-            result = int(round(regr['lin'].predict([input])[0], 0))
+#            result = int(round(regr['lin'].predict([input])[0], 0))
 
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
