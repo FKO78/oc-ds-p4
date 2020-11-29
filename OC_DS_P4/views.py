@@ -46,13 +46,13 @@ def estimate():
 
 #    pfile = app.config['SOURCE_FILE']
 
-#    tmp_origin = get_city(cities, origin)
-#    tmp_dest = get_city(cities, dest)
+    tmp_origin = get_city(cities, origin)
+    tmp_dest = get_city(cities, dest)
 
-#    if (tmp_origin == None) or (tmp_dest == None):
-#        res = 'Pas d"estimation possible'
-#    else:
-#        origin, dest = tmp_origin, tmp_dest
+    if (tmp_origin == None) or (tmp_dest == None):
+        res = 'Pas d"estimation possible'
+    else:
+        origin, dest = tmp_origin, tmp_dest
 #    group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & (trips.DEST_CITY_NAME == dest)][['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
 #        estimation = delay_estimation(origin=origin, dest=dest, h_dep=dep, h_arr=arr, dflight=day)
 
