@@ -42,7 +42,7 @@ def estimate():
     try:
         dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
     except ValueError:
-        result = "Erreur dans le format de date {}".format(dflight)
+        result = "Erreur dans le format de date {}".format(day)
 
 #    pfile = app.config['SOURCE_FILE']
 
