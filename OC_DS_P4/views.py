@@ -95,6 +95,7 @@ def estimate():
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
 
-    return json.dumps({'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, '4_Dep' : dep, '5_Arr' : arr }, \
-                      '_Out' : {'1_Delay' : result, '2_Carrier' : carrier, '3_Group'  : group}}, \
+    return json.dumps({'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, \
+                                '4_Dep' : app.config("DICT_HORAIRES")[dep], '5_Arr' : app.config("DICT_HORAIRES")[arr] }, \
+                      '_Out' : {'1_Delay (min)' : result, '2_Carrier' : carrier, '3_Group'  : group}}, \
                       sort_keys=True, indent=4)
