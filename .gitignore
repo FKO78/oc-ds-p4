@@ -1,0 +1,8 @@
+*.pyc
+__pycache__
+env/
+app.db
+OC_DS_P3/tests/*.db
+geckodriver.log
+.cache/
+*.bak
