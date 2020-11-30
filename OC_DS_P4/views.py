@@ -98,8 +98,8 @@ def estimate():
 
                 result = int(round(regr['lin'].predict([input])[0], 0))
 
-    except ValueError:
-        result = "Erreur dans le format de date {}".format(day)
+        except ValueError:
+            result = "Erreur dans le format de date {}".format(day)
 
     return json.dumps({'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, \
                                 '4_Dep' : dep, '5_Arr' : arr }, \
