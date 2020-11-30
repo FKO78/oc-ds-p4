@@ -45,52 +45,58 @@ def estimate():
         * le retard (min) estimé à l'arrivée
     """
 
-    origin = request.args.get('origin')
-    dest = request.args.get('dest')
-    dep = request.args.get('dep')
-    arr = request.args.get('arr')
-    day = request.args.get('day')
-
     result = ""
-
     input = []
 
-    creneaux = np.arange(7,24).tolist()
-    dep = test_h(creneaux, dep)
-    arr = test_h(creneaux, arr)
+    if request.args.get('origin') is None or \
+        request.args.get('dest') is None or \
+        request.args.get('dep') is None or \
+        request.args.get('arr') is None or \
+        request.args.get('day') is None:
+        result = "Veuillez vérifier les paramètres passés"
+    else:
+        origin = request.args.get('origin')
+        dest = request.args.get('dest')
+        dep = request.args.get('dep')
+        arr = request.args.get('arr')
+        day = request.args.get('day')
 
-    try:
-        dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
+        creneaux = np.arange(7,24).tolist()
+        dep = test_h(creneaux, dep)
+        arr = test_h(creneaux, arr)
 
-        tmp_origin = get_city(cities, origin)
-        tmp_dest = get_city(cities, dest)
-        if (tmp_origin == None) or (tmp_dest == None):
-            res = 'Pas d"estimation possible'
-        else:
-            origin, dest = tmp_origin, tmp_dest
-            group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & \
-                                    (trips.DEST_CITY_NAME == dest)]\
-                                    [['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
-        #MONTH
-            input.append(dflight.month)
-        #ORIGIN_CITY_NAME
-            input.append(CITY_lbl.transform([origin])[0])
-        #DISTANCE_GROUP
-            input.append(group)
-        #DEP_TIME_BLK'
-            input.append(dep)
-        #FROM_HDAYS'
-            input.append(abs(from_hdays(app.config['FERIES'], dflight)))
-        #DEST_CITY_NAME
-            input.append(CITY_lbl.transform([dest])[0])
-        #DAY_OF_WEEK'
-            input.append(dflight.weekday()+1)
-        #ARR_TIME_BLK'
-            input.append(arr)
-        #UNIQUE_CARRIER
-            input.append(CARRIER_lbl.transform([carrier])[0])
+        try:
+            dflight = datetime.datetime.strptime(day, '%Y-%m-%d').date()
 
-            result = int(round(regr['lin'].predict([input])[0], 0))
+            tmp_origin = get_city(cities, origin)
+            tmp_dest = get_city(cities, dest)
+            if tmp_origin is None or tmp_dest is None:
+                result = 'Pas d"estimation possible'
+            else:
+                origin, dest = tmp_origin, tmp_dest
+                group, carrier  = trips[(trips.ORIGIN_CITY_NAME == origin) & \
+                                        (trips.DEST_CITY_NAME == dest)]\
+                                        [['DISTANCE_GROUP', 'UNIQUE_CARRIER']].values[0]
+            #MONTH
+                input.append(dflight.month)
+            #ORIGIN_CITY_NAME
+                input.append(CITY_lbl.transform([origin])[0])
+            #DISTANCE_GROUP
+                input.append(group)
+            #DEP_TIME_BLK'
+                input.append(dep)
+            #FROM_HDAYS'
+                input.append(abs(from_hdays(app.config['FERIES'], dflight)))
+            #DEST_CITY_NAME
+                input.append(CITY_lbl.transform([dest])[0])
+            #DAY_OF_WEEK'
+                input.append(dflight.weekday()+1)
+            #ARR_TIME_BLK'
+                input.append(arr)
+            #UNIQUE_CARRIER
+                input.append(CARRIER_lbl.transform([carrier])[0])
+
+                result = int(round(regr['lin'].predict([input])[0], 0))
 
     except ValueError:
         result = "Erreur dans le format de date {}".format(day)
