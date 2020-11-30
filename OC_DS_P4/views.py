@@ -48,11 +48,7 @@ def estimate():
     result = ""
     input = []
 
-    if request.args.get('origin') is None or \
-        request.args.get('dest') is None or \
-        request.args.get('dep') is None or \
-        request.args.get('arr') is None or \
-        request.args.get('day') is None:
+    if len(request.args) != 5:
         result = "Veuillez vérifier les paramètres passés"
     else:
         origin = request.args.get('origin')
