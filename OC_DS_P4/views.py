@@ -3,7 +3,7 @@ import datetime
 from flask import Flask, request #, render_template, url_for,
 from .utils import *
 from pickle import Unpickler
-import json
+from json import dumps
 #import sys
 
 #sys.setrecursionlimit(20000)
@@ -19,9 +19,12 @@ with open(app.config['SOURCE_FILE'], 'rb') as file:
     unpickler = Unpickler(file)
     trips = unpickler.load()
     CITY_lbl = unpickler.load()
-    cities = unpickler.load()
     CARRIER_lbl = unpickler.load()
     regr = unpickler.load()
+
+cities = pd.concat([pd.DataFrame(trips.ORIGIN_CITY_NAME.unique(), columns = ['NAME']),  \
+                   pd.DataFrame(trips.DEST_CITY_NAME.unique(), columns = ['NAME'])], \
+                   ignore_index=True).drop_duplicates().reset_index(drop=True) 
 
 @app.route('/')
 def index():
@@ -36,12 +39,10 @@ def estimate():
         * dflight : date du voyage au format AAAA-MM-JJ
         * origin : nom de la ville de départ
         * dest : nom de la ville d'arrivée
-        * h_dep : heure 'pleine' de départ souhaitée (ex., 10 entre 10:00 et 10:59)
-        * h_arr : heure 'pleine' d'arrivée souhaitée (ex., 14 entre 14:00 et 14:59)
+        * dep : heure 'pleine' de départ souhaitée (ex., 10 entre 10:00 et 10:59)
+        * arr : heure 'pleine' d'arrivée souhaitée (ex., 14 entre 14:00 et 14:59)
 
     Sorties
-        * le nom standard de la ville de départ
-        * le nom standard de la ville de destination
         * le retard (min) estimé à l'arrivée
     """
 
@@ -102,7 +103,7 @@ def estimate():
         except ValueError:
             result = "Erreur dans le format de date {}".format(day)
 
-    return json.dumps({'_In' : {'1_origin' : origin, '2_dest': dest, '3_day' : day, \
-                                '4_dep' : dep, '5_arr' : arr }, \
-                      '_Out' : {'1_delay (min)' : result}}, \
-                      sort_keys=True, indent=4)
+    return dumps({'_In' : {'1_origin' : origin, '2_dest': dest, \
+                           '3_day' : day, '4_dep' : dep, '5_arr' : arr }, \
+                '_Out' : {'1_delay (min)' : result}}, \
+                sort_keys=True, indent=4)
