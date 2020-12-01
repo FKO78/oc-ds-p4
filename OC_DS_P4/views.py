@@ -24,7 +24,7 @@ with open(app.config['SOURCE_FILE'], 'rb') as file:
 
 cities = pd.concat([pd.DataFrame(trips.ORIGIN_CITY_NAME.unique(), columns = ['NAME']),  \
                    pd.DataFrame(trips.DEST_CITY_NAME.unique(), columns = ['NAME'])], \
-                   ignore_index=True).drop_duplicates().reset_index(drop=True) 
+                   ignore_index=True).drop_duplicates().reset_index(drop=True)
 
 @app.route('/')
 def index():
@@ -101,7 +101,7 @@ def estimate():
                 result = int(round(regr['lin'].predict([input])[0], 0))
 
         except ValueError:
-            result = "Erreur dans le format de date {}".format(day)
+            result = "Erreur dans le format de date" 
 
     return dumps({'_In' : {'1_origin' : origin, '2_dest': dest, \
                            '3_day' : day, '4_dep' : dep, '5_arr' : arr }, \
