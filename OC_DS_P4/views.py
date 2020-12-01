@@ -102,7 +102,7 @@ def estimate():
         except ValueError:
             result = "Erreur dans le format de date {}".format(day)
 
-    return json.dumps({'_In' : {'1_From' : origin, '2_To': dest, '3_Day' : day, \
-                                '4_Dep' : dep, '5_Arr' : arr }, \
+    return json.dumps({'_In' : {'1_origin' : origin, '2_dest': dest, '3_day' : day, \
+                                '4_dep' : dep, '5_arr' : arr }, \
                       '_Out' : {'1_Delay (min)' : result}}, \
                       sort_keys=True, indent=4)
